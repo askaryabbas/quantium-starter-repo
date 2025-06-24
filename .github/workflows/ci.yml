@@ -1,0 +1,31 @@
+name: CI - Dash App Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🔄 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Set up Python 3.9
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+
+      - name: 📦 Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libglib2.0-0 libnss3 libgconf-2-4 \
+            libfontconfig1 libxss1 libappindicator3-1 libasound2 xvfb
+
+      - name: 🔒 Make script executable
+        run: chmod +x run_tests.sh
+
+      - name: 🚀 Run tests
+        run: ./run_tests.sh
